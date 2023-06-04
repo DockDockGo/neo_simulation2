@@ -9,6 +9,7 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch.actions import TimerAction
 
 MY_NEO_ROBOT = os.environ.get('MY_ROBOT', "mpo_700")
 MY_NEO_ENVIRONMENT = os.environ.get('MAP_NAME', "neo_workshop")
@@ -80,7 +81,17 @@ def generate_launch_description():
                 }.items(),
         ))
 
-    for i in range(0, int(MY_NO_ROBOTS)):
-        ld.add_action(bringup[i])
+    delay_time = 5.0
+    delayed_bringup_action = [TimerAction(period=delay_time, actions=[bringup[-1]])]
+
+    for k in range(len(bringup)-2,-1,-1):
+        delayed_bringup_action.append(
+            TimerAction(period=delay_time, actions=[bringup[k],delayed_bringup_action[-1]])
+        )
+        
+    ld.add_action(delayed_bringup_action[-1])
+
+    # for i in range(0, int(MY_NO_ROBOTS)):
+    #     ld.add_action(bringup[i])
 
     return ld
