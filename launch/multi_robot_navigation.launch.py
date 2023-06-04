@@ -16,11 +16,34 @@ MY_NO_ROBOTS = os.environ['Number_of_Robots']
 
 def generate_launch_description():
     global MY_NO_ROBOTS 
-    if(int(MY_NO_ROBOTS) > 5):
-        print("Warn: Having more than 5 robots is not a good idea - too much overhead")
-        print("Therefore Let's spawn 5")
-        MY_NO_ROBOTS = '5'
-        time.sleep(5)
+    # if(int(MY_NO_ROBOTS) > 5):
+    #     print("Warn: Having more than 5 robots is not a good idea - too much overhead")
+    #     print("Therefore Let's spawn 5")
+    #     MY_NO_ROBOTS = '5'
+    #     time.sleep(5)
+
+
+    # verify is if the navigation files exist in path:
+    #  os.path.join(
+    #         get_package_share_directory('neo_simulation2'),
+    #         'configs/'+MY_NEO_ROBOT,
+    #         'navigation_'+ str(i) +'.yaml')}.items(),
+    #     ))
+
+    # if not os.path.exists(os.path.join(
+    #         get_package_share_directory('neo_simulation2'),
+    #         'configs/'+MY_NEO_ROBOT,
+    #         'navigation_'+ str(0) +'.yaml')):
+    #     print("Error: Navigation files do not exist in path: " + os.path.join(
+    #         get_package_share_directory('neo_simulation2'),
+    #         'configs/'+MY_NEO_ROBOT,
+    #         'navigation_'+ str(0) +'.yaml'))
+    #     print("Please check if the robot name is correct and if the navigation files exist")
+    #     exit()
+
+
+
+
 
     ld = LaunchDescription()
     bringup = []
