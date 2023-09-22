@@ -56,8 +56,8 @@ def generate_launch_description():
     delta_x = 1.0 #meter
     delta_y = 1.0 #meter
 
-    x0 = -5.0
-    y0 = -5.0
+    x0 = -0.75
+    y0 = 0.25
 
     num_cols = min(max_cols, int(MY_NO_ROBOTS))
     num_rows = int(MY_NO_ROBOTS) // num_cols    
