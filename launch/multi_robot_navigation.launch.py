@@ -54,11 +54,34 @@ def generate_launch_description():
     )
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
     use_multi_robots = LaunchConfiguration("use_multi_robots", default="True")
+
+    target_xy_threshold = LaunchConfiguration("target_xy_threshold", default="0.7")
+    wait_time = LaunchConfiguration("wait_time", default="10000")
+
     neo_sim_launch_file_dir = os.path.join(
         get_package_share_directory("neo_simulation2"), "launch"
     )
+    ddg_waypoint_follower_launch_file_dir = os.path.join(
+        get_package_share_directory("ddg_waypoint_follower"), "launch"
+    )
 
     for i in range(0, int(MY_NO_ROBOTS)):
+        bringup.append(
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    [
+                        ddg_waypoint_follower_launch_file_dir,
+                        "/ddg_waypoint_follower.launch.py",
+                    ]
+                ),
+                launch_arguments={
+                    "namespace": "robot" + str(i),
+                    "target_xy_threshold": target_xy_threshold,
+                    "wait_time": wait_time,
+                }.items(),
+            )
+        )
+
         bringup.append(
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(

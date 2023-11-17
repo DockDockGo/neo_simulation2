@@ -124,29 +124,42 @@ def generate_launch_description():
     # ------------------------------TIMER----------------------------------------
     spawn_actions = []
 
+    xy_pos = np.asarray(
+        [
+            [-1.6, 1.4],
+            [-1.6, -2.2],
+            [5.5, -0.33],
+            [5.5, -2.2],
+        ]
+    )
+    # y_pos = np.asarray([-1.6])
+
     i = 0
-    for y in y_pos:
-        for x in x_pos:
-            spawn_actions.append(
-                IncludeLaunchDescription(
-                    PythonLaunchDescriptionSource(
-                        os.path.join(
-                            get_package_share_directory("neo_simulation2"),
-                            "launch",
-                            "simulation.launch.py",
-                        )
-                    ),
-                    launch_arguments={
-                        "use_multi_robots": "True",
-                        # 'x': str(x),
-                        # 'y': str(y),
-                        "x": str(y),
-                        "y": str(x),
-                        "namespace_robot": "robot" + str(i),
-                    }.items(),
-                )
+    for xy in xy_pos:
+        # for x i/n x_pos:
+        spawn_actions.append(
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(
+                        get_package_share_directory("neo_simulation2"),
+                        "launch",
+                        "simulation.launch.py",
+                    )
+                ),
+                launch_arguments={
+                    "use_multi_robots": "True",
+                    # 'x': str(x),
+                    # 'y': str(y),
+                    "x": str(xy[0]),
+                    "y": str(xy[1]),
+                    "namespace_robot": "robot" + str(i),
+                }.items(),
             )
-            i += 1
+        )
+        i += 1
+
+        if i >= int(MY_NO_ROBOTS):
+            break
 
     delay_time = 5.0
     delayed_spawn_action = [TimerAction(period=delay_time, actions=[spawn_actions[-1]])]

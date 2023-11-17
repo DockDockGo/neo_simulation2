@@ -4,7 +4,7 @@ neo_localization2_node:
     odom_frame: "/odom"
     # exponential low pass gain for localization update (0 to 1)
     #   (higher gain means odometry is less used / relied on)
-    update_gain: 0.5
+    update_gain: 0.0
     # time based confidence gain when in 2D / 1D mode
     confidence_gain: 0.01
     # how many particles (samples) to spread (per update)
@@ -51,7 +51,7 @@ neo_localization2_node:
     # solver update damping, higher damping = more stability / slower convergence
     solver_damping: 1000.0
     # number of gauss-newton iterations per sample per scan
-    solver_iterations: 20
+    solver_iterations: 1
     # maximum wait for getting transforms [s]
     transform_timeout: 0.2
     # if to broadcast map frame
