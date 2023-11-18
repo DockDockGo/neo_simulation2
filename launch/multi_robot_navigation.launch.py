@@ -55,7 +55,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
     use_multi_robots = LaunchConfiguration("use_multi_robots", default="True")
 
-    target_xy_threshold = LaunchConfiguration("target_xy_threshold", default="0.7")
+    target_xy_threshold = LaunchConfiguration("target_xy_threshold", default="0.5")
     wait_time = LaunchConfiguration("wait_time", default="10000")
 
     neo_sim_launch_file_dir = os.path.join(

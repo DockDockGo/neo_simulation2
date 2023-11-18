@@ -170,180 +170,180 @@ bt_navigator:
       - compute_path_error_code
       - follow_path_error_code
 
-# controller_server:
-#   ros__parameters:
-#     # controller server parameters (see Controller Server for more info)
-#     controller_frequency: 100.0
-#     min_x_velocity_threshold: 0.001
-#     min_y_velocity_threshold: 0.5
-#     min_theta_velocity_threshold: 0.001
-#     controller_plugins: ["FollowPath"]
-#     goal_checker_plugins: ["general_goal_checker"]
-#     progress_checker_plugin: "progress_checker"
-#     progress_checker:
-#       plugin: "nav2_controller::SimpleProgressChecker"
-#       required_movement_radius: 0.5
-#       movement_time_allowance: 100.0
-#     general_goal_checker:
-#       plugin: "nav2_controller::SimpleGoalChecker"
-#       xy_goal_tolerance: 0.05
-#       yaw_goal_tolerance: 0.05
-#       stateful: True
-#     # neo_local_planner controller parameters
-#     FollowPath:
-#       plugin: "neo_local_planner::NeoLocalPlanner"
-#       # The x acceleration limit of the robot in meters/sec^2
-#        # The x acceleration limit of the robot in meters/sec^2
-#       acc_lim_x : 0.25
-#       # The rotational acceleration limit of the robot in radians/sec^2
-#       acc_lim_theta : 0.8
-#       # The maximum x velocity for the robot in m/s.
-#       max_vel_x : 0.8
-#       # The minimum x velocity for the robot in m/s, negative for backwards motion.
-#       min_vel_x : -0.1
-#       # The absolute value of the maximum rotational velocity for the robot in rad/s
-#       max_rot_vel : 0.8
-#       # The absolute value of the minimum rotational velocity for the robot in rad/s
-#       min_rot_vel : 0.1
-#       # The absolute value of the maximum translational velocity for the robot in m/s
-#       max_trans_vel : 0.8
-#       # The absolute value of the minimum translational velocity for the robot in m/s
-#       min_trans_vel : 0.1
-#       # The tolerance in radians for the controller in yaw/rotation when achieving its goal
-#       yaw_goal_tolerance : 0.05
-#       # The tolerance in meters for the controller in the x & y distance when achieving a goal
-#       xy_goal_tolerance : 0.1
-#       # How long to fine tune for goal position after reaching tolerance limits [s]
-#       goal_tune_time : 3.0
-#       # How far to predict control pose into the future based on latest odometry [s]
-#       lookahead_time : 0.3
-#       # How far to look ahead when computing path orientation [m]
-#       lookahead_dist : 0.5
-#       # Threshold yaw error below which we consider to start moving [rad]
-#       start_yaw_error : 0.2
-#       # Gain when adjusting final x position for goal [1/s]
-#       pos_x_gain : 1.0
-#       # Gain for lane keeping based on y error (differential only) [rad/s^2]
-#       pos_y_yaw_gain : 1.0
-#       # Gain for lane keeping based on yaw error (differential only) [1/s]
-#       yaw_gain : 2.0
-#       # Gain for adjusting yaw when not translating, or in case of holonomic drive  [1/s]
-#       static_yaw_gain : 3.0
-#       # Gain for y cost avoidance (differential only)
-#       cost_y_yaw_gain : 0.3
-#       # How far ahead to compute y cost gradient (constant offset) [m]
-#       cost_y_lookahead_dist : 0.3
-#       # How far ahead to compute y cost gradient (dynamic offset) [s]
-#       cost_y_lookahead_time : 1.5
-#       # Gain for yaw cost avoidance
-#       cost_yaw_gain : 2.0
-#       # Gain for final control low pass filter
-#       low_pass_gain : 0.2
-#       # Max cost to allow, above we slow down to min_trans_vel or even stop
-#       max_cost : 0.95
-#       # Max velocity based on curvature [rad/s]
-#       max_curve_vel : 0.3
-#       # Max distance to goal when looking for it [m]
-#       max_goal_dist : 0.3
-#       # Max distance allowable for backing up (zero = unlimited) [m]
-#       max_backup_dist : 0.1
-#       # Minimal distance for stopping [m]
-#       min_stop_dist : 0.3
-#       # If robot has differential drive, holonomic otherwise
-#       differential_drive : true
-#       # odom frame_id
-#       local_frame: "/odom"
-#       # base frame_id
-#       base_frame: "/base_link"
-#       # odom topic
-#       odom_topic: "odom"
-
 controller_server:
   ros__parameters:
-    controller_frequency: 30.0
+    # controller server parameters (see Controller Server for more info)
+    controller_frequency: 100.0
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.5
+    min_theta_velocity_threshold: 0.001
+    controller_plugins: ["FollowPath"]
+    goal_checker_plugins: ["general_goal_checker"]
+    progress_checker_plugin: "progress_checker"
+    progress_checker:
+      plugin: "nav2_controller::SimpleProgressChecker"
+      required_movement_radius: 0.5
+      movement_time_allowance: 100.0
+    general_goal_checker:
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.05
+      yaw_goal_tolerance: 0.05
+      stateful: True
+    # neo_local_planner controller parameters
     FollowPath:
-      plugin: "nav2_mppi_controller::MPPIController"
-      time_steps: 56
-      model_dt: 0.05
-      batch_size: 2000
-      vx_std: 0.2
-      vy_std: 0.2
-      wz_std: 0.4
-      vx_max: 0.5
-      vx_min: -0.35
-      vy_max: 0.5
-      wz_max: 1.9
-      iteration_count: 1
-      prune_distance: 1.7
-      transform_tolerance: 0.1
-      temperature: 0.3
-      gamma: 0.015
-      motion_model: "DiffDrive"
-      visualize: false
-      reset_period: 1.0 # (only in Humble)
-      regenerate_noises: false
-      TrajectoryVisualizer:
-        trajectory_step: 5
-        time_step: 3
-      AckermannConstraints:
-        min_turning_r: 0.2
-      critics: ["ConstraintCritic", "ObstaclesCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
-      ConstraintCritic:
-        enabled: true
-        cost_power: 1
-        cost_weight: 4.0
-      GoalCritic:
-        enabled: true
-        cost_power: 1
-        cost_weight: 5.0
-        threshold_to_consider: 1.4
-      GoalAngleCritic:
-        enabled: true
-        cost_power: 1
-        cost_weight: 3.0
-        threshold_to_consider: 0.5
-      PreferForwardCritic:
-        enabled: true
-        cost_power: 1
-        cost_weight: 5.0
-        threshold_to_consider: 0.5
-      ObstaclesCritic:
-        enabled: true
-        cost_power: 1
-        repulsion_weight: 1.5
-        critical_weight: 20.0
-        consider_footprint: false
-        collision_cost: 10000.0
-        collision_margin_distance: 0.1
-        near_goal_distance: 0.5
-        inflation_radius: 0.55 # (only in Humble)
-        cost_scaling_factor: 10.0 # (only in Humble)
-      PathAlignCritic:
-        enabled: true
-        cost_power: 1
-        cost_weight: 14.0
-        max_path_occupancy_ratio: 0.05
-        trajectory_point_step: 3
-        threshold_to_consider: 0.5
-        offset_from_furthest: 20
-      PathFollowCritic:
-        enabled: true
-        cost_power: 1
-        cost_weight: 5.0
-        offset_from_furthest: 5
-        threshold_to_consider: 1.4
-      PathAngleCritic:
-        enabled: true
-        cost_power: 1
-        cost_weight: 2.0
-        offset_from_furthest: 4
-        threshold_to_consider: 0.5
-        max_angle_to_furthest: 1.0
-        mode: 0
-      # TwirlingCritic:
-      #   enabled: true
-      #   twirling_cost_power: 1
-      #   twirling_cost_weight: 10.0se_path_orientations: false
+      plugin: "neo_local_planner::NeoLocalPlanner"
+      # The x acceleration limit of the robot in meters/sec^2
+       # The x acceleration limit of the robot in meters/sec^2
+      acc_lim_x : 0.25
+      # The rotational acceleration limit of the robot in radians/sec^2
+      acc_lim_theta : 0.8
+      # The maximum x velocity for the robot in m/s.
+      max_vel_x : 0.8
+      # The minimum x velocity for the robot in m/s, negative for backwards motion.
+      min_vel_x : -0.1
+      # The absolute value of the maximum rotational velocity for the robot in rad/s
+      max_rot_vel : 0.8
+      # The absolute value of the minimum rotational velocity for the robot in rad/s
+      min_rot_vel : 0.1
+      # The absolute value of the maximum translational velocity for the robot in m/s
+      max_trans_vel : 0.8
+      # The absolute value of the minimum translational velocity for the robot in m/s
+      min_trans_vel : 0.1
+      # The tolerance in radians for the controller in yaw/rotation when achieving its goal
+      yaw_goal_tolerance : 0.05
+      # The tolerance in meters for the controller in the x & y distance when achieving a goal
+      xy_goal_tolerance : 0.1
+      # How long to fine tune for goal position after reaching tolerance limits [s]
+      goal_tune_time : 3.0
+      # How far to predict control pose into the future based on latest odometry [s]
+      lookahead_time : 0.3
+      # How far to look ahead when computing path orientation [m]
+      lookahead_dist : 0.5
+      # Threshold yaw error below which we consider to start moving [rad]
+      start_yaw_error : 0.2
+      # Gain when adjusting final x position for goal [1/s]
+      pos_x_gain : 1.0
+      # Gain for lane keeping based on y error (differential only) [rad/s^2]
+      pos_y_yaw_gain : 1.0
+      # Gain for lane keeping based on yaw error (differential only) [1/s]
+      yaw_gain : 2.0
+      # Gain for adjusting yaw when not translating, or in case of holonomic drive  [1/s]
+      static_yaw_gain : 3.0
+      # Gain for y cost avoidance (differential only)
+      cost_y_yaw_gain : 0.3
+      # How far ahead to compute y cost gradient (constant offset) [m]
+      cost_y_lookahead_dist : 0.3
+      # How far ahead to compute y cost gradient (dynamic offset) [s]
+      cost_y_lookahead_time : 1.5
+      # Gain for yaw cost avoidance
+      cost_yaw_gain : 2.0
+      # Gain for final control low pass filter
+      low_pass_gain : 0.2
+      # Max cost to allow, above we slow down to min_trans_vel or even stop
+      max_cost : 0.95
+      # Max velocity based on curvature [rad/s]
+      max_curve_vel : 0.3
+      # Max distance to goal when looking for it [m]
+      max_goal_dist : 0.3
+      # Max distance allowable for backing up (zero = unlimited) [m]
+      max_backup_dist : 0.1
+      # Minimal distance for stopping [m]
+      min_stop_dist : 0.3
+      # If robot has differential drive, holonomic otherwise
+      differential_drive : true
+      # odom frame_id
+      local_frame: "/odom"
+      # base frame_id
+      base_frame: "/base_link"
+      # odom topic
+      odom_topic: "odom"
+
+# controller_server:
+#   ros__parameters:
+#     controller_frequency: 30.0
+#     FollowPath:
+#       plugin: "nav2_mppi_controller::MPPIController"
+#       time_steps: 56
+#       model_dt: 0.05
+#       batch_size: 2000
+#       vx_std: 0.2
+#       vy_std: 0.2
+#       wz_std: 0.4
+#       vx_max: 0.8
+#       vx_min: -0.35
+#       vy_max: 0.2
+#       wz_max: 1.9
+#       iteration_count: 1
+#       prune_distance: 1.7
+#       transform_tolerance: 0.1
+#       temperature: 0.3
+#       gamma: 0.015
+#       motion_model: "DiffDrive"
+#       visualize: false
+#       reset_period: 1.0 # (only in Humble)
+#       regenerate_noises: false
+#       TrajectoryVisualizer:
+#         trajectory_step: 5
+#         time_step: 3
+#       AckermannConstraints:
+#         min_turning_r: 0.2
+#       critics: ["ConstraintCritic", "ObstaclesCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
+#       ConstraintCritic:
+#         enabled: true
+#         cost_power: 1
+#         cost_weight: 4.0
+#       GoalCritic:
+#         enabled: true
+#         cost_power: 1
+#         cost_weight: 5.0
+#         threshold_to_consider: 1.4
+#       GoalAngleCritic:
+#         enabled: true
+#         cost_power: 1
+#         cost_weight: 3.0
+#         threshold_to_consider: 0.5
+#       PreferForwardCritic:
+#         enabled: true
+#         cost_power: 1
+#         cost_weight: 5.0
+#         threshold_to_consider: 0.5
+#       ObstaclesCritic:
+#         enabled: true
+#         cost_power: 1
+#         repulsion_weight: 1.5
+#         critical_weight: 20.0
+#         consider_footprint: false
+#         collision_cost: 10000.0
+#         collision_margin_distance: 0.1
+#         near_goal_distance: 0.5
+#         inflation_radius: 0.55 # (only in Humble)
+#         cost_scaling_factor: 10.0 # (only in Humble)
+#       PathAlignCritic:
+#         enabled: true
+#         cost_power: 1
+#         cost_weight: 14.0
+#         max_path_occupancy_ratio: 0.05
+#         trajectory_point_step: 3
+#         threshold_to_consider: 0.5
+#         offset_from_furthest: 20
+#       PathFollowCritic:
+#         enabled: true
+#         cost_power: 1
+#         cost_weight: 5.0
+#         offset_from_furthest: 5
+#         threshold_to_consider: 1.4
+#       PathAngleCritic:
+#         enabled: true
+#         cost_power: 1
+#         cost_weight: 2.0
+#         offset_from_furthest: 4
+#         threshold_to_consider: 0.5
+#         max_angle_to_furthest: 1.0
+#         mode: 0
+#       # TwirlingCritic:
+#       #   enabled: true
+#       #   twirling_cost_power: 1
+#       #   twirling_cost_weight: 10.0se_path_orientations: false
 
 local_costmap:
   local_costmap:
